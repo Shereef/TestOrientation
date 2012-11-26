@@ -76,9 +76,58 @@
     // e.g. self.myOutlet = nil;
 }
 
+- (BOOL)shouldAutorotate
+{
+    NSString* jsCall = @"window.shouldAutorotate && window.shouldAutorotate()";
+    NSString* res = [self.webView stringByEvaluatingJavaScriptFromString:jsCall];
+	
+    if ([res length] > 0) {
+        return [res boolValue];
+    }
+	return [super shouldAutorotate];
+}
+
+- (NSInteger)mapIosOrientationToJsOrientation:(UIInterfaceOrientation)orientation
+{
+    switch (orientation) {
+        case UIInterfaceOrientationPortraitUpsideDown:
+            return 180;
+			
+        case UIInterfaceOrientationLandscapeLeft:
+            return -90;
+			
+        case UIInterfaceOrientationLandscapeRight:
+            return 90;
+			
+        case UIInterfaceOrientationPortrait:
+            return 0;
+			
+        default:
+            return 0;
+    }
+}
+
+
+- (NSUInteger)supportedInterfaceOrientations
+{
+    NSString* jsCall = @"window.supportedInterfaceOrientations && window.supportedInterfaceOrientations()";
+    NSString* res = [self.webView stringByEvaluatingJavaScriptFromString:jsCall];
+	
+    if ([res length] > 0) {
+        return [res integerValue];
+    }
+	return [super supportedInterfaceOrientations];
+	
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    // Return YES for supported orientations
+    NSString* jsCall = @"window.shouldAutorotate && window.shouldAutorotate()";
+    NSString* res = [self.webView stringByEvaluatingJavaScriptFromString:jsCall];
+	
+    if ([res length] > 0) {
+        return [res boolValue];
+    }
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
 
